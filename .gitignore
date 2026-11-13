@@ -3,10 +3,6 @@
 *.tfstate
 *.tfstate.*
 terraform.tfstate.d/
-*.tfplan
-tfplan
-tfplan.json
-*.tfplan.json
 crash.log
 crash.*.log
 override.tf
