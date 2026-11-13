@@ -1,0 +1,45 @@
+import "tfconfig/v2" as tfconfig
+import "tfplan/v2" as tfplan
+
+approved_provider_sources = [
+	"registry.terraform.io/hashicorp/aws",
+]
+
+approved_versions = {
+	"registry.terraform.io/hashicorp/aws": "~> 6.0",
+}
+
+provider_source_ok = rule {
+	length(tfconfig.providers else {}) > 0 and
+	all tfconfig.providers as _, p {
+		(p.full_name else "") in approved_provider_sources
+	}
+}
+
+provider_version_ok = rule {
+	all tfconfig.providers else {} as _, p {
+		(p.full_name else "") in keys(approved_versions) and
+			(p.version_constraint else "") == approved_versions[p.full_name]
+	}
+}
+
+provider_selected_ok = rule {
+	length(tfplan.provider_configurations else {}) > 0 and
+	all tfplan.provider_configurations as _, pc {
+		(pc.provider_address else "") in approved_provider_sources
+	}
+}
+
+module_source_ok = rule {
+	length(tfconfig.module_calls else {}) > 0 and
+	all tfconfig.module_calls as _, mc {
+		(mc.source else "") matches "^\\./modules/[a-zA-Z0-9_-]+$"
+	}
+}
+
+main = rule {
+	provider_source_ok and
+	provider_version_ok and
+	provider_selected_ok and
+	module_source_ok
+}

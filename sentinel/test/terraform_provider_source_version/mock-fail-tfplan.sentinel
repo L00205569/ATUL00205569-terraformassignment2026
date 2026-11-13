@@ -1,0 +1,6 @@
+resources = {}
+provider_configurations = {
+  "aws" : {
+    "provider_address" : "registry.terraform.io/hashicorp/aws",
+  },
+}

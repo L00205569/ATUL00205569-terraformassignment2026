@@ -1,0 +1,45 @@
+resources = {
+  "aws_s3_bucket" : {
+    "module.storage.aws_s3_bucket.this" : {
+      "applied" : {
+        "bucket" : "atul00205569-logs-dev",
+      },
+    },
+  },
+  "aws_s3_bucket_server_side_encryption_configuration" : {
+    "module.storage.aws_s3_bucket_server_side_encryption_configuration.this[0]" : {
+      "applied" : {
+        "rule" : [
+          {
+            "apply_server_side_encryption_by_default" : [
+              {
+                "sse_algorithm" : "aws:s3",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  "aws_s3_bucket_public_access_block" : {
+    "module.storage.aws_s3_bucket_public_access_block.this[0]" : {
+      "applied" : {
+        "block_public_acls"       : true,
+        "block_public_policy"     : true,
+        "ignore_public_acls"      : true,
+        "restrict_public_buckets" : true,
+      },
+    },
+  },
+  "aws_s3_bucket_versioning" : {
+    "module.storage.aws_s3_bucket_versioning.this" : {
+      "applied" : {
+        "versioning_configuration" : [
+          {
+            "status" : "Enabled",
+          },
+        ],
+      },
+    },
+  },
+}

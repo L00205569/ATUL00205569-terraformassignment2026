@@ -1,0 +1,18 @@
+import "tfplan/v2" as tfplan
+
+approved_region = "eu-west-1"
+aws_instances = tfplan.resources.aws_instance else {}
+
+aws_instance_exists = rule {
+	length(aws_instances) > 0
+}
+
+all_instances_in_ireland = rule {
+	all aws_instances as _, i {
+		(i.applied.region else "") == approved_region
+	}
+}
+
+main = rule {
+	aws_instance_exists and all_instances_in_ireland
+}

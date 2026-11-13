@@ -1,0 +1,279 @@
+PASS - aws_ireland_region_restriction.sentinel
+  PASS - test/aws_ireland_region_restriction/fail.hcl
+
+    trace:
+      aws_ireland_region_restriction.sentinel:16:1 - Rule "main"
+        Value:
+          false
+
+      aws_ireland_region_restriction.sentinel:10:1 - Rule "all_instances_in_ireland"
+        Value:
+          false
+
+      aws_ireland_region_restriction.sentinel:6:1 - Rule "aws_instance_exists"
+        Value:
+          true
+  PASS - test/aws_ireland_region_restriction/pass.hcl
+
+    trace:
+      aws_ireland_region_restriction.sentinel:16:1 - Rule "main"
+        Value:
+          true
+
+      aws_ireland_region_restriction.sentinel:10:1 - Rule "all_instances_in_ireland"
+        Value:
+          true
+
+      aws_ireland_region_restriction.sentinel:6:1 - Rule "aws_instance_exists"
+        Value:
+          true
+PASS - terraform_provider_source_version.sentinel
+  PASS - test/terraform_provider_source_version/fail.hcl
+
+    trace:
+      terraform_provider_source_version.sentinel:40:1 - Rule "main"
+        Value:
+          false
+
+      terraform_provider_source_version.sentinel:33:1 - Rule "module_source_ok"
+        Value:
+          false
+
+      terraform_provider_source_version.sentinel:26:1 - Rule "provider_selected_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:12:1 - Rule "provider_source_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:19:1 - Rule "provider_version_ok"
+        Value:
+          true
+  PASS - test/terraform_provider_source_version/pass.hcl
+
+    trace:
+      terraform_provider_source_version.sentinel:40:1 - Rule "main"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:33:1 - Rule "module_source_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:26:1 - Rule "provider_selected_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:12:1 - Rule "provider_source_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:19:1 - Rule "provider_version_ok"
+        Value:
+          true
+  PASS - test/terraform_provider_source_version/source-fail.hcl
+
+    trace:
+      terraform_provider_source_version.sentinel:40:1 - Rule "main"
+        Value:
+          false
+
+      terraform_provider_source_version.sentinel:12:1 - Rule "provider_source_ok"
+        Value:
+          false
+  PASS - test/terraform_provider_source_version/version-fail.hcl
+
+    trace:
+      terraform_provider_source_version.sentinel:40:1 - Rule "main"
+        Value:
+          false
+
+      terraform_provider_source_version.sentinel:12:1 - Rule "provider_source_ok"
+        Value:
+          true
+
+      terraform_provider_source_version.sentinel:19:1 - Rule "provider_version_ok"
+        Value:
+          false
+PASS - aws_s3_encryption_public_access.sentinel
+  PASS - test/aws_s3_encryption_public_access/encryption-fail.hcl
+
+    trace:
+      aws_s3_encryption_public_access.sentinel:51:1 - Rule "main"
+        Value:
+          false
+
+      aws_s3_encryption_public_access.sentinel:10:1 - Rule "s3_encryption_ok"
+        Value:
+          false
+  PASS - test/aws_s3_encryption_public_access/fail.hcl
+
+    trace:
+      aws_s3_encryption_public_access.sentinel:51:1 - Rule "main"
+        Value:
+          false
+
+      aws_s3_encryption_public_access.sentinel:19:1 - Rule "public_access_block_ok"
+        Value:
+          false
+
+      aws_s3_encryption_public_access.sentinel:10:1 - Rule "s3_encryption_ok"
+        Value:
+          true
+  PASS - test/aws_s3_encryption_public_access/pass.hcl
+
+    trace:
+      aws_s3_encryption_public_access.sentinel:51:1 - Rule "main"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:26:1 - Rule "bucket_has_encryption"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:32:1 - Rule "bucket_has_pab"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:38:1 - Rule "bucket_has_versioning"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:19:1 - Rule "public_access_block_ok"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:10:1 - Rule "s3_encryption_ok"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:43:1 - Rule "versioning_enabled"
+        Value:
+          true
+  PASS - test/aws_s3_encryption_public_access/versioning-fail.hcl
+
+    trace:
+      aws_s3_encryption_public_access.sentinel:51:1 - Rule "main"
+        Value:
+          false
+
+      aws_s3_encryption_public_access.sentinel:26:1 - Rule "bucket_has_encryption"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:32:1 - Rule "bucket_has_pab"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:38:1 - Rule "bucket_has_versioning"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:19:1 - Rule "public_access_block_ok"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:10:1 - Rule "s3_encryption_ok"
+        Value:
+          true
+
+      aws_s3_encryption_public_access.sentinel:43:1 - Rule "versioning_enabled"
+        Value:
+          false
+PASS - aws_ec2_metadata_ssh_security.sentinel
+  PASS - test/aws_ec2_metadata_ssh_security/fail.hcl
+
+    trace:
+      aws_ec2_metadata_ssh_security.sentinel:79:1 - Rule "main"
+        Value:
+          false
+
+      aws_ec2_metadata_ssh_security.sentinel:30:1 - Rule "imdsv2_required"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:37:1 - Rule "instance_type_ok"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:57:1 - Rule "ssh_restricted"
+        Value:
+          false
+  PASS - test/aws_ec2_metadata_ssh_security/metadata-fail.hcl
+
+    trace:
+      aws_ec2_metadata_ssh_security.sentinel:79:1 - Rule "main"
+        Value:
+          false
+
+      aws_ec2_metadata_ssh_security.sentinel:30:1 - Rule "imdsv2_required"
+        Value:
+          false
+  PASS - test/aws_ec2_metadata_ssh_security/pass.hcl
+
+    trace:
+      aws_ec2_metadata_ssh_security.sentinel:79:1 - Rule "main"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:66:1 - Rule "ebs_root_encrypted"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:73:1 - Rule "ebs_volume_encrypted"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:30:1 - Rule "imdsv2_required"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:37:1 - Rule "instance_type_ok"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:57:1 - Rule "ssh_restricted"
+        Value:
+          true
+  PASS - test/aws_ec2_metadata_ssh_security/root-volume-fail.hcl
+
+    trace:
+      aws_ec2_metadata_ssh_security.sentinel:79:1 - Rule "main"
+        Value:
+          false
+
+      aws_ec2_metadata_ssh_security.sentinel:66:1 - Rule "ebs_root_encrypted"
+        Value:
+          false
+
+      aws_ec2_metadata_ssh_security.sentinel:30:1 - Rule "imdsv2_required"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:37:1 - Rule "instance_type_ok"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:57:1 - Rule "ssh_restricted"
+        Value:
+          true
+  PASS - test/aws_ec2_metadata_ssh_security/ssh-ipv4-fail.hcl
+
+    trace:
+      aws_ec2_metadata_ssh_security.sentinel:79:1 - Rule "main"
+        Value:
+          false
+
+      aws_ec2_metadata_ssh_security.sentinel:30:1 - Rule "imdsv2_required"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:37:1 - Rule "instance_type_ok"
+        Value:
+          true
+
+      aws_ec2_metadata_ssh_security.sentinel:57:1 - Rule "ssh_restricted"
+        Value:
+          false
+4 tests completed in 3.86718ms

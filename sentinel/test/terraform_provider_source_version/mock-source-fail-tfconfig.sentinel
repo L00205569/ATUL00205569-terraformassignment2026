@@ -1,0 +1,18 @@
+providers = {
+  "aws" : {
+    "full_name"          : "registry.terraform.io/acme/aws",
+    "version_constraint" : "~> 6.0",
+    "config" : {},
+  },
+}
+module_calls = {
+  "network" : {
+    "source" : "./modules/network",
+  },
+  "compute" : {
+    "source" : "./modules/compute",
+  },
+  "storage" : {
+    "source" : "./modules/storage",
+  },
+}
