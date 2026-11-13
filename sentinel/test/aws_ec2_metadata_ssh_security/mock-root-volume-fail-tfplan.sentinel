@@ -1,0 +1,36 @@
+resources = {
+  "aws_instance" : {
+    "app" : {
+      "applied" : {
+        "instance_type" : "t3.micro",
+        "metadata_options" : [
+          {
+            "http_tokens"   : "required",
+            "http_endpoint" : "enabled",
+          },
+        ],
+        "root_block_device" : [
+          {
+            "encrypted" : false,
+          },
+        ],
+      },
+    },
+  },
+  "aws_security_group" : {
+    "app" : {
+      "applied" : {
+        "ingress" : [
+          {
+            "from_port"        : 22,
+            "to_port"          : 22,
+            "protocol"         : "tcp",
+            "cidr_blocks"      : ["192.0.2.0/24"],
+            "ipv6_cidr_blocks" : [],
+          },
+        ],
+      },
+    },
+  },
+  "aws_ebs_volume" : {},
+}

@@ -1,0 +1,57 @@
+import "tfplan/v2" as tfplan
+
+func pab_compliant(b) {
+	return (b.applied.block_public_acls else false) is true and
+		(b.applied.block_public_policy else false) is true and
+		(b.applied.ignore_public_acls else false) is true and
+		(b.applied.restrict_public_buckets else false) is true
+}
+
+s3_encryption_ok = rule {
+	length(tfplan.resources.aws_s3_bucket_server_side_encryption_configuration else {}) > 0 and
+	all tfplan.resources.aws_s3_bucket_server_side_encryption_configuration as _, c {
+		all c.applied.rule else [] as r {
+			(r.apply_server_side_encryption_by_default[0].sse_algorithm else "") in ["AES256", "aws:kms"]
+		}
+	}
+}
+
+public_access_block_ok = rule {
+	length(tfplan.resources.aws_s3_bucket_public_access_block else {}) > 0 and
+	all tfplan.resources.aws_s3_bucket_public_access_block as _, b {
+		pab_compliant(b)
+	}
+}
+
+bucket_has_encryption = rule {
+	length(tfplan.resources.aws_s3_bucket else {}) > 0 and
+	length(tfplan.resources.aws_s3_bucket_server_side_encryption_configuration else {}) ==
+	length(tfplan.resources.aws_s3_bucket else {})
+}
+
+bucket_has_pab = rule {
+	length(tfplan.resources.aws_s3_bucket else {}) > 0 and
+	length(tfplan.resources.aws_s3_bucket_public_access_block else {}) ==
+	length(tfplan.resources.aws_s3_bucket else {})
+}
+
+bucket_has_versioning = rule {
+	length(tfplan.resources.aws_s3_bucket_versioning else {}) ==
+	length(tfplan.resources.aws_s3_bucket else {})
+}
+
+versioning_enabled = rule {
+	bucket_has_versioning and
+	length(tfplan.resources.aws_s3_bucket_versioning else {}) > 0 and
+	all tfplan.resources.aws_s3_bucket_versioning as _, v {
+		(v.applied.versioning_configuration[0].status else "") == "Enabled"
+	}
+}
+
+main = rule {
+	s3_encryption_ok and
+	public_access_block_ok and
+	bucket_has_encryption and
+	bucket_has_pab and
+	versioning_enabled
+}

@@ -1,0 +1,9 @@
+resources = {
+  "aws_instance" : {
+    "app" : {
+      "applied" : {
+        "region" : "eu-west-1",
+      },
+    },
+  },
+}

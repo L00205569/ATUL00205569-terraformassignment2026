@@ -1,0 +1,85 @@
+import "tfplan/v2" as tfplan
+
+approved_ssh_cidr = "192.0.2.0/24"
+
+approved_instance_types = [
+	"t3.micro", "t3.small", "t3.medium",
+	"t4g.micro", "t4g.small",
+	"m6i.large", "m6i.xlarge",
+	"c6i.large",
+]
+
+func imdsv2_ok(i) {
+	mo = i.applied.metadata_options else []
+	if length(mo) == 0 {
+		return false
+	}
+	token = mo[0].http_tokens else ""
+	endpoint = mo[0].http_endpoint else ""
+	return token == "required" and endpoint == "enabled"
+}
+
+func ebs_root_ok(i) {
+	rb = i.applied.root_block_device else []
+	if length(rb) == 0 {
+		return false
+	}
+	return (rb[0].encrypted else false) is true
+}
+
+imdsv2_required = rule {
+	length(tfplan.resources.aws_instance else {}) > 0 and
+	all tfplan.resources.aws_instance as _, i {
+		imdsv2_ok(i)
+	}
+}
+
+instance_type_ok = rule {
+	length(tfplan.resources.aws_instance else {}) > 0 and
+	all tfplan.resources.aws_instance as _, i {
+		(i.applied.instance_type else "") in approved_instance_types
+	}
+}
+
+func ssh_is_ingress(ing) {
+	protocol = ing.protocol else ""
+	return protocol == "-1" or
+		(protocol == "tcp" and (ing.from_port else 0) <= 22 and (ing.to_port else 0) >= 22)
+}
+
+func ssh_ingress_is_approved(ing) {
+	ipv4 = ing.cidr_blocks else []
+	ipv6 = ing.ipv6_cidr_blocks else []
+	return not ssh_is_ingress(ing) or
+		(length(ipv4) == 1 and ipv4[0] == approved_ssh_cidr and length(ipv6) == 0)
+}
+
+ssh_restricted = rule {
+	length(tfplan.resources.aws_security_group else {}) > 0 and
+	all tfplan.resources.aws_security_group as _, sg {
+		all sg.applied.ingress else [] as ing {
+			ssh_ingress_is_approved(ing)
+		}
+	}
+}
+
+ebs_root_encrypted = rule {
+	length(tfplan.resources.aws_instance else {}) > 0 and
+	all tfplan.resources.aws_instance as _, i {
+		ebs_root_ok(i)
+	}
+}
+
+ebs_volume_encrypted = rule {
+	all tfplan.resources.aws_ebs_volume else {} as _, v {
+		(v.applied.encrypted else false) is true
+	}
+}
+
+main = rule {
+	imdsv2_required and
+	instance_type_ok and
+	ssh_restricted and
+	ebs_root_encrypted and
+	ebs_volume_encrypted
+}

@@ -1,0 +1,25 @@
+# Terraform working files and state
+**/.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate.d/
+*.tfplan
+tfplan
+tfplan.json
+*.tfplan.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local credentials and environment files
+.aws/
+.env
+.env.*
+*.secret.tfvars
+*.auto.tfvars
+*.tfvars.json
+
+# Keep .terraform.lock.hcl and the assignment's example terraform.tfvars tracked.
