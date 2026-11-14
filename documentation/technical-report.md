@@ -12,5 +12,9 @@ The Ireland region helps with data location, but it does not cover backup locati
 
 ## Recommendations
 
-Connect the policies to HCP Terraform and capture a real compliant run and a rejected non-compliant run. Review module changes, check provider and module sources, scan for known issues, and update versions carefully. Before production, choose an approved SSH range and review backup, access, and key arrangements. Remove the AWS resources after collecting evidence to avoid ongoing charges.
+Connect the policies to HCP Terraform and capture a real compliant run and a rejected non-compliant run. 
+Review module changes, check provider and module sources, scan for known issues, and update versions carefully. 
+Before production, choose an approved SSH range and review backup, access, and key arrangements. 
+Remove the AWS resources after collecting evidence to avoid ongoing charges.
+
 
